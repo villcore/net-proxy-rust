@@ -1,5 +1,4 @@
 use tokio::io;
-use tokio::signal::unix::signal;
 use std::future::Future;
 use tokio::net::{TcpListener, TcpStream};
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -11,7 +10,7 @@ use std::io::Error;
 async fn main() -> io::Result<()> {
     let config = LocalConfig {
         pac_port: 50087,
-        http_proxy_port: 50082,
+        http_proxy_port: 50081,
     };
 
     println!("Start server pid: {}", std::process::id());
@@ -77,10 +76,10 @@ impl LocalProxy {
                     return;
                 }
 
-                let s = String::from_utf8(Vec::from(&tx_buffer[..30])).unwrap();
-                println!("====== Read bytes {} form local socket {} =====", size, local_address);
-                println!("{}", s);
-                println!("===============================================");
+                // let s = String::from_utf8(Vec::from(&tx_buffer[..30])).unwrap();
+                // println!("====== Read bytes {} form local socket {} =====", size, local_address);
+                // println!("{}", s);
+                // println!("===============================================");
 
                 let mut dst_tcp_stream_opt = None;
                 match LocalProxy::parse_http_host(size, &tx_buffer[..size]) {
@@ -117,10 +116,10 @@ impl LocalProxy {
                         if size == 0 {
                            return;
                         }
-                        println!("src read >>>>> {}", size);
+                        // println!("src read >>>>> {}", size);
                         dst_tx.write_buf(&mut tx_buffer).await;
                         dst_tx.flush().await;
-                        println!("dst write >>>>> {}", size);
+                        // println!("dst write >>>>> {}", size);
                         tx_buffer.clear();
                     }
 
@@ -129,12 +128,12 @@ impl LocalProxy {
                         if size == 0 {
                             return;
                         }
-                        println!("dst read <<<<< {}", size);
+                        // println!("dst read <<<<< {}", size);
                         // LocalProxy::println(&dst_read_buffer[.. size]);
                         // let s = String::from_utf8(Vec::from(&dst_read_buffer[.. size])).unwrap();
                         src_tx.write_all(&dst_read_buffer[.. size]).await;
                         src_tx.flush().await;
-                        println!("src write <<<<< {}", size);
+                        // println!("src write <<<<< {}", size);
                         dst_read_buffer.clear();
                     }
                 }
