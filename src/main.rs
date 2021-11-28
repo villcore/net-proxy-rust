@@ -51,7 +51,6 @@ struct Connection {}
 struct LocalConfig {
     pac_port: u32,
     http_proxy_port: u32,
-    // remote server list, use enum
 }
 
 struct Config {
@@ -206,9 +205,9 @@ impl LocalProxy {
                 };
                 let mut dst_tcp_stream = TcpStream::connect(format!("{}:{}", user.address, user.port)).await.unwrap();
 
-                // vmess handshake
+                // mess handshake
                 tx_buffer.clear();
-                LocalProxy::vmess_handshake(&mut tx_buffer, &address);
+                LocalProxy::mess_handshake(&mut tx_buffer, &address);
                 println!("Write to {} , {} bytes", dst_tcp_stream.peer_addr().unwrap(), tx_buffer.len());
                 dst_tcp_stream.write_all(&tx_buffer[..]).await.unwrap();
                 println!("Write to {} , {} bytes finish", dst_tcp_stream.peer_addr().unwrap(), tx_buffer.len());
@@ -311,7 +310,7 @@ impl LocalProxy {
         println!("===============================================");
     }
 
-    fn vmess_handshake(bytes_mut: &mut BytesMut, target_addr: &SocketAddr) -> io::Result<()> {
+    fn mess_handshake(bytes_mut: &mut BytesMut, target_addr: &SocketAddr) -> io::Result<()> {
         let user = User {
             uuid: "f3347094-0679-4e2d-822c-bbe25ec0abe3",
             address: "c27s4.jamjams.net",
