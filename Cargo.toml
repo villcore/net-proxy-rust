@@ -19,6 +19,13 @@ tokio = { version = "1", features = [
     "test-util",
     "signal",
 ] }
+tokio-io-timeout = "1.1.1"
+rand="0.8.4"
+md5 = "0.7.0"
+byte-order = "0.3.0"
+rust-crypto = "0.2"
+cfb-mode = "0.7.1"
+aes = "0.7.5"
 bytes = "1.1.0"
 tokio-test = "0.4"
 tokio-util = { version = "0.6", features = ["codec"] }
